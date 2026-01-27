@@ -9,14 +9,10 @@ class DownloadLog extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = [
-        'purchase_id',
-        'ip_address',
-        'downloaded_at',
-    ];
+    protected $fillable = ["purchase_id", "ip_address", "downloaded_at"];
 
     protected $casts = [
-        'downloaded_at' => 'datetime',
+        "downloaded_at" => "datetime",
     ];
 
     public function purchase(): BelongsTo

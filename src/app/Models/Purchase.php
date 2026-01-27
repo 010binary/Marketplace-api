@@ -8,12 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Purchase extends Model
 {
-    protected $fillable = [
-        'user_id',
-        'product_id',
-        'reference',
-        'status',
-    ];
+    protected $fillable = ["user_id", "product_id", "reference", "status"];
 
     public function user(): BelongsTo
     {

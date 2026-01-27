@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ProductFile extends Model
 {
     protected $fillable = [
-        'product_id',
-        'disk',
-        'path',
-        'original_filename',
-        'mime_type',
-        'size',
+        "product_id",
+        "disk",
+        "path",
+        "original_filename",
+        "mime_type",
+        "size",
     ];
 
     public function product(): BelongsTo

@@ -13,17 +13,17 @@ class Product extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'creator_id',
-        'category_id',
-        'title',
-        'description',
-        'price',
-        'is_active',
+        "creator_id",
+        "category_id",
+        "title",
+        "description",
+        "price",
+        "is_active",
     ];
 
     public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class, "creator_id");
     }
 
     public function category(): BelongsTo
