@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('product_files', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->string('disk')->default('local');
+            $table->string('path');
+            $table->string('original_filename');
+            $table->string('mime_type')->nullable();
+            $table->bigInteger('size')->unsigned(); // File size in bytes
             $table->timestamps();
+
+            $table->index('product_id');
         });
     }
 

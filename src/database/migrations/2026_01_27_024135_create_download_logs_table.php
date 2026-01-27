@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('download_logs', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('purchase_id')->constrained('purchases')->onDelete('cascade');
+            $table->ipAddress('ip_address'); // Uses inet type on PostgreSQL
+            $table->timestamp('downloaded_at');
+
+            $table->index('purchase_id');
+            $table->index('downloaded_at');
         });
     }
 
