@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
@@ -62,23 +62,12 @@ class AuthController extends Controller
     }
 
     /**
-     * Logout from all devices
-     */
-    public function logoutAll(Request $request): JsonResponse
-    {
-        $this->authService->logoutAll($request->user());
-
-        return response()->json([
-            "message" => "Logged out from all devices successfully",
-        ]);
-    }
-
-    /**
      * Get authenticated user
      */
     public function me(Request $request): JsonResponse
     {
         return response()->json([
+            "message" => "User retrieved successfully",
             "data" => new UserResource($request->user()),
         ]);
     }
