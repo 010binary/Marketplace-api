@@ -9,6 +9,10 @@ class Category extends Model
 {
     protected $fillable = ["name", "slug"];
 
+    protected $casts = [
+        "id" => "integer",
+    ];
+
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
