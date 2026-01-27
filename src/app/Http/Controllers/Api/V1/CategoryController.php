@@ -18,7 +18,7 @@ class CategoryController extends Controller
 
     #[
         OA\Get(
-            path: "/api/categories",
+            path: "/api/v1/categories",
             summary: "Get paginated list of categories",
             description: "Retrieve a paginated list of all categories",
             security: [["sanctum" => []]],
@@ -74,7 +74,7 @@ class CategoryController extends Controller
 
     #[
         OA\Get(
-            path: "/api/categories/{id}",
+            path: "/api/v1/categories/{id}",
             summary: "Get a specific category",
             description: "Retrieve details of a specific category by ID",
             security: [["sanctum" => []]],
@@ -120,7 +120,7 @@ class CategoryController extends Controller
 
     #[
         OA\Post(
-            path: "/api/categories",
+            path: "/api/v1/categories",
             summary: "Create a new category",
             description: "Create a new category (Creator only)",
             security: [["sanctum" => []]],
@@ -162,7 +162,7 @@ class CategoryController extends Controller
                     ),
                 ),
                 new OA\Response(
-                    response: 422,
+                    response: 400,
                     description: "Validation error",
                     content: new OA\JsonContent(
                         ref: "#/components/schemas/ValidationError",
@@ -184,7 +184,7 @@ class CategoryController extends Controller
 
     #[
         OA\Put(
-            path: "/api/categories/{category}",
+            path: "/api/v1/categories/{category}",
             summary: "Update a category",
             description: "Update an existing category (Creator only)",
             security: [["sanctum" => []]],
@@ -242,7 +242,7 @@ class CategoryController extends Controller
                     ),
                 ),
                 new OA\Response(
-                    response: 422,
+                    response: 400,
                     description: "Validation error",
                     content: new OA\JsonContent(
                         ref: "#/components/schemas/ValidationError",
@@ -267,7 +267,7 @@ class CategoryController extends Controller
 
     #[
         OA\Delete(
-            path: "/api/categories/{category}",
+            path: "/api/v1/categories/{category}",
             summary: "Delete a category",
             description: "Delete a category (Creator only). Category must not have any products.",
             security: [["sanctum" => []]],
@@ -308,7 +308,7 @@ class CategoryController extends Controller
                     ),
                 ),
                 new OA\Response(
-                    response: 422,
+                    response: 400,
                     description: "Category has products attached",
                     content: new OA\JsonContent(
                         properties: [

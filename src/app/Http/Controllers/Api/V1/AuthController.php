@@ -18,7 +18,7 @@ class AuthController extends Controller
 
     #[
         OA\Post(
-            path: "/api/auth/register",
+            path: "/api/v1/auth/register",
             summary: "Register a new user",
             description: "Register a new user account as either a creator or customer",
             requestBody: new OA\RequestBody(
@@ -95,7 +95,7 @@ class AuthController extends Controller
                     ),
                 ),
                 new OA\Response(
-                    response: 422,
+                    response: 400,
                     description: "Validation error",
                     content: new OA\JsonContent(
                         ref: "#/components/schemas/ValidationError",
@@ -122,7 +122,7 @@ class AuthController extends Controller
 
     #[
         OA\Post(
-            path: "/api/auth/login",
+            path: "/api/v1/auth/login",
             summary: "Login user",
             description: "Authenticate user and return access token",
             requestBody: new OA\RequestBody(
@@ -176,7 +176,7 @@ class AuthController extends Controller
                     ),
                 ),
                 new OA\Response(
-                    response: 422,
+                    response: 400,
                     description: "Invalid credentials",
                     content: new OA\JsonContent(
                         ref: "#/components/schemas/ValidationError",
@@ -200,7 +200,7 @@ class AuthController extends Controller
 
     #[
         OA\Post(
-            path: "/api/auth/logout",
+            path: "/api/v1/auth/logout",
             summary: "Logout user from current device",
             description: "Logout user and revoke current access token",
             security: [["sanctum" => []]],
@@ -240,7 +240,7 @@ class AuthController extends Controller
 
     #[
         OA\Get(
-            path: "/api/auth/me",
+            path: "/api/v1/auth/me",
             summary: "Get authenticated user",
             description: "Get currently authenticated user details",
             security: [["sanctum" => []]],

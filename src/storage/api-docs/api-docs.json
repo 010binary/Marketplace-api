@@ -7,19 +7,19 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000",
+            "url": "http://localhost",
             "description": "Local API Server"
         }
     ],
     "paths": {
-        "/api/auth/register": {
+        "/api/v1/auth/register": {
             "post": {
                 "tags": [
                     "Authentication"
                 ],
                 "summary": "Register a new user",
                 "description": "Register a new user account as either a creator or customer",
-                "operationId": "8f7237208878d2e15ab53c3639e56c03",
+                "operationId": "b9e746d77661fb8df55d0ac63e1ece77",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -95,7 +95,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -108,14 +108,14 @@
                 }
             }
         },
-        "/api/auth/login": {
+        "/api/v1/auth/login": {
             "post": {
                 "tags": [
                     "Authentication"
                 ],
                 "summary": "Login user",
                 "description": "Authenticate user and return access token",
-                "operationId": "8b1ca12fe82a8104a6fbb70f5e149956",
+                "operationId": "a7997e7c1e3bfed64d4e56de82415931",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -171,7 +171,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid credentials",
                         "content": {
                             "application/json": {
@@ -184,14 +184,14 @@
                 }
             }
         },
-        "/api/auth/logout": {
+        "/api/v1/auth/logout": {
             "post": {
                 "tags": [
                     "Authentication"
                 ],
                 "summary": "Logout user from current device",
                 "description": "Logout user and revoke current access token",
-                "operationId": "27275bf89a63f0655982adc39f1b8535",
+                "operationId": "f6b8957b4c0b25636613a9f0512a8ba9",
                 "responses": {
                     "200": {
                         "description": "Logged out successfully",
@@ -227,14 +227,14 @@
                 ]
             }
         },
-        "/api/auth/me": {
+        "/api/v1/auth/me": {
             "get": {
                 "tags": [
                     "Authentication"
                 ],
                 "summary": "Get authenticated user",
                 "description": "Get currently authenticated user details",
-                "operationId": "80b38cc8df2681b450772b73bfcdfd38",
+                "operationId": "37d33f0281f67d31d05b4c45eea0143b",
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -269,14 +269,14 @@
                 ]
             }
         },
-        "/api/categories": {
+        "/api/v1/categories": {
             "get": {
                 "tags": [
                     "Categories"
                 ],
                 "summary": "Get paginated list of categories",
                 "description": "Retrieve a paginated list of all categories",
-                "operationId": "ae9b26d9023ae9c83c0b65c7d78b9a2f",
+                "operationId": "e225c2b7eb5daf7fb16e00f4f07ff030",
                 "parameters": [
                     {
                         "name": "per_page",
@@ -335,7 +335,7 @@
                 ],
                 "summary": "Create a new category",
                 "description": "Create a new category (Creator only)",
-                "operationId": "e0210673ee95266563e9a973956194a1",
+                "operationId": "dd76b8d73b7ea8b4951f03d7c0904c92",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -387,7 +387,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -405,14 +405,14 @@
                 ]
             }
         },
-        "/api/categories/{id}": {
+        "/api/v1/categories/{id}": {
             "get": {
                 "tags": [
                     "Categories"
                 ],
                 "summary": "Get a specific category",
                 "description": "Retrieve details of a specific category by ID",
-                "operationId": "564539d5ef8ca557a4d8bb5f272c3c9e",
+                "operationId": "9c4934d1b68a6d4440ec72cfc8ae7074",
                 "parameters": [
                     {
                         "name": "id",
@@ -464,14 +464,14 @@
                 ]
             }
         },
-        "/api/categories/{category}": {
+        "/api/v1/categories/{category}": {
             "put": {
                 "tags": [
                     "Categories"
                 ],
                 "summary": "Update a category",
                 "description": "Update an existing category (Creator only)",
-                "operationId": "e31b84def63113a45dc5fac77600fd51",
+                "operationId": "fef831466f74165300ad79335535294d",
                 "parameters": [
                     {
                         "name": "category",
@@ -545,7 +545,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -568,7 +568,7 @@
                 ],
                 "summary": "Delete a category",
                 "description": "Delete a category (Creator only). Category must not have any products.",
-                "operationId": "7bb8c5dbf608a0706524b72cae290404",
+                "operationId": "9d956da3b4cf5d9bf6b8b59812334243",
                 "parameters": [
                     {
                         "name": "category",
@@ -615,7 +615,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Category has products attached",
                         "content": {
                             "application/json": {
