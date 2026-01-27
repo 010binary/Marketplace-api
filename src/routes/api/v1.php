@@ -27,7 +27,7 @@ Route::middleware("auth:sanctum")->group(function () {
         Route::post("logout", [AuthController::class, "logout"]);
         Route::get("me", [AuthController::class, "me"]);
     });
-    
+
     //general routes
     Route::get("/categories", [CategoryController::class, "index"]); // paginated
     Route::get("/categories/{id}", [CategoryController::class, "show"]);
@@ -47,7 +47,6 @@ Route::middleware("auth:sanctum")->group(function () {
 
     // customer routes
     Route::middleware("role:customer")->group(function () {
-        Route::get("/categories", [CategoryController::class, "index"]); // paginated
-        Route::get("/categories/{id}", [CategoryController::class, "show"]);
+        //
     });
 });
