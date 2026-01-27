@@ -18,6 +18,7 @@
                     "Authentication"
                 ],
                 "summary": "Register a new user",
+                "description": "Register a new user account as either a creator or customer",
                 "operationId": "8f7237208878d2e15ab53c3639e56c03",
                 "requestBody": {
                     "required": true,
@@ -79,11 +80,11 @@
                                         "data": {
                                             "properties": {
                                                 "user": {
-                                                    "type": "object"
+                                                    "$ref": "#/components/schemas/User"
                                                 },
                                                 "token": {
                                                     "type": "string",
-                                                    "example": "1|abcdef123456..."
+                                                    "example": "1|nJZmaKgkzaGmvPNYDIrYCOjmCVvKZy2WsNW4fruRe24c588b"
                                                 }
                                             },
                                             "type": "object"
@@ -95,7 +96,14 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error"
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationError"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -106,6 +114,7 @@
                     "Authentication"
                 ],
                 "summary": "Login user",
+                "description": "Authenticate user and return access token",
                 "operationId": "8b1ca12fe82a8104a6fbb70f5e149956",
                 "requestBody": {
                     "required": true,
@@ -147,11 +156,11 @@
                                         "data": {
                                             "properties": {
                                                 "user": {
-                                                    "type": "object"
+                                                    "$ref": "#/components/schemas/User"
                                                 },
                                                 "token": {
                                                     "type": "string",
-                                                    "example": "1|abcdef123456..."
+                                                    "example": "1|nJZmaKgkzaGmvPNYDIrYCOjmCVvKZy2WsNW4fruRe24c588b"
                                                 }
                                             },
                                             "type": "object"
@@ -163,7 +172,14 @@
                         }
                     },
                     "422": {
-                        "description": "Invalid credentials"
+                        "description": "Invalid credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationError"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -174,6 +190,7 @@
                     "Authentication"
                 ],
                 "summary": "Logout user from current device",
+                "description": "Logout user and revoke current access token",
                 "operationId": "27275bf89a63f0655982adc39f1b8535",
                 "responses": {
                     "200": {
@@ -193,7 +210,14 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated"
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -208,7 +232,8 @@
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Get authenticated user details",
+                "summary": "Get authenticated user",
+                "description": "Get currently authenticated user details",
                 "operationId": "80b38cc8df2681b450772b73bfcdfd38",
                 "responses": {
                     "200": {
@@ -218,7 +243,7 @@
                                 "schema": {
                                     "properties": {
                                         "data": {
-                                            "type": "object"
+                                            "$ref": "#/components/schemas/User"
                                         }
                                     },
                                     "type": "object"
@@ -227,7 +252,384 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated"
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get paginated list of categories",
+                "description": "Retrieve a paginated list of all categories",
+                "operationId": "ae9b26d9023ae9c83c0b65c7d78b9a2f",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15,
+                            "example": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoryPaginated"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Create a new category",
+                "description": "Create a new category (Creator only)",
+                "operationId": "e0210673ee95266563e9a973956194a1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "E-Books"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Category created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - Creator role required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/categories/{id}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get a specific category",
+                "description": "Retrieve details of a specific category by ID",
+                "operationId": "564539d5ef8ca557a4d8bb5f272c3c9e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Category ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Category not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/categories/{category}": {
+            "put": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Update a category",
+                "description": "Update an existing category (Creator only)",
+                "operationId": "e31b84def63113a45dc5fac77600fd51",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "Category ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Updated E-Books"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Category updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - Creator role required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Category not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Delete a category",
+                "description": "Delete a category (Creator only). Category must not have any products.",
+                "operationId": "7bb8c5dbf608a0706524b72cae290404",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "Category ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Category deleted successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthenticated"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - Creator role required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Category not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Category has products attached",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Category cannot be deleted because it has products attached."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -239,6 +641,214 @@
         }
     },
     "components": {
+        "schemas": {
+            "Category": {
+                "title": "Category",
+                "description": "Category model",
+                "required": [
+                    "id",
+                    "name",
+                    "slug"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "E-Books"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "e_books"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-01-27T03:16:30.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-01-27T03:16:30.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "CategoryPaginated": {
+                "title": "Paginated Categories",
+                "description": "Paginated list of categories",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Category"
+                        }
+                    },
+                    "current_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "first_page_url": {
+                        "type": "string",
+                        "example": "http://localhost:8000/api/categories?page=1"
+                    },
+                    "from": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "last_page": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "last_page_url": {
+                        "type": "string",
+                        "example": "http://localhost:8000/api/categories?page=5"
+                    },
+                    "links": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "url": {
+                                    "type": "string",
+                                    "nullable": true
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "active": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "next_page_url": {
+                        "type": "string",
+                        "example": "http://localhost:8000/api/categories?page=2",
+                        "nullable": true
+                    },
+                    "path": {
+                        "type": "string",
+                        "example": "http://localhost:8000/api/categories"
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": 15
+                    },
+                    "prev_page_url": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "to": {
+                        "type": "integer",
+                        "example": 15
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": 50
+                    }
+                },
+                "type": "object"
+            },
+            "ValidationError": {
+                "title": "Validation Error",
+                "description": "Validation error response",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "The given data was invalid."
+                    },
+                    "errors": {
+                        "type": "object",
+                        "example": {
+                            "field": [
+                                "The field is required."
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Unauthenticated": {
+                "title": "Unauthenticated",
+                "description": "Unauthenticated response",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Unauthenticated."
+                    }
+                },
+                "type": "object"
+            },
+            "Forbidden": {
+                "title": "Forbidden",
+                "description": "Forbidden response",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "This action is unauthorized."
+                    }
+                },
+                "type": "object"
+            },
+            "NotFound": {
+                "title": "Not Found",
+                "description": "Resource not found response",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Resource not found"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User",
+                "description": "User model",
+                "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "role"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "creator",
+                            "customer"
+                        ],
+                        "example": "creator"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-01-27T03:16:30.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-01-27T03:16:30.000000Z"
+                    }
+                },
+                "type": "object"
+            }
+        },
         "securitySchemes": {
             "sanctum": {
                 "type": "http",
@@ -250,7 +860,11 @@
     "tags": [
         {
             "name": "Authentication",
-            "description": "Authentication"
+            "description": "User authentication endpoints"
+        },
+        {
+            "name": "Categories",
+            "description": "Category management endpoints"
         }
     ],
     "security": [
