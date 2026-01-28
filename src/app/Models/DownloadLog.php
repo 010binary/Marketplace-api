@@ -12,6 +12,8 @@ class DownloadLog extends Model
     protected $fillable = ["purchase_id", "ip_address", "downloaded_at"];
 
     protected $casts = [
+        "id" => "integer",
+        "purchase_id" => "integer",
         "downloaded_at" => "datetime",
     ];
 

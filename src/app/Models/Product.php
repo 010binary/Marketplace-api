@@ -21,6 +21,14 @@ class Product extends Model
         "is_active",
     ];
 
+    protected $casts = [
+        "id" => "integer",
+        "creator_id" => "integer",
+        "category_id" => "integer",
+        "price" => "decimal:2",
+        "is_active" => "boolean",
+    ];
+
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, "creator_id");
